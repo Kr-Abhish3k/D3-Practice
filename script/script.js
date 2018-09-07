@@ -101,11 +101,11 @@
         return that.xScale(d.year);
       }).attr("cy", function(d) {
         return that.yScale(d.count);
-      }).attr("r", 5).style("fill", "	#34738f").attr("stroke", "#fff").on("mouseover", function(d) {
+      }).attr("r", 5).style("fill", "#7a7a7a").attr("stroke", "#fff").on("mouseover", function(d) {
         var boxHeight, boxWidth, leftPosition, topPosition;
         d3.select(this).attr("r", 8).style("fill", function(d) {
           return "#fff";
-        }).attr("stroke", '#34738f').attr("stroke-width", 5);
+        }).attr("stroke", '#36648b').attr("stroke-width", 5);
         leftPosition = $(this).attr("cx");
         topPosition = $(this).attr("cy");
         boxWidth = $(".drawBoard").width();
@@ -126,7 +126,7 @@
         that.toolTipDiv.transition().duration(200).style('opacity', 0.9);
         return that.toolTipDiv.html("Year : " + d.year.getFullYear() + "<br>" + "Count : " + d.count).style("left", leftPosition + "px").style("top", topPosition + "px");
       }).on("mouseout", function(d) {
-        d3.select(this).attr("r", 5).style("fill", "#34738f").attr("stroke", '#fff').attr("stroke-width", 1);
+        d3.select(this).attr("r", 5).style("fill", "#7a7a7a").attr("stroke", '#fff').attr("stroke-width", 1);
         return that.toolTipDiv.transition().duration(500).style('opacity', 0);
       });
     }

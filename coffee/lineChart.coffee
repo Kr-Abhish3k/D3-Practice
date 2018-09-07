@@ -99,13 +99,13 @@ window.lineChart = class lineChart
 			.attr("cx", (d)-> that.xScale(d.year))	
 			.attr("cy", (d)-> that.yScale(d.count))
 			.attr("r",5)
-			.style("fill","	#34738f")
+			.style("fill","#7a7a7a")
 			.attr("stroke","#fff")
 			.on("mouseover",(d)->
 				d3.select(this)
 					.attr("r",8)
 					.style("fill",(d)->"#fff")
-					.attr("stroke",'#34738f')
+					.attr("stroke",'#36648b')
 					.attr("stroke-width",5)	
 
 				leftPosition = 	$(this).attr("cx")
@@ -136,7 +136,7 @@ window.lineChart = class lineChart
 			.on("mouseout", (d)->
 				d3.select(this)
 					.attr("r",5)
-					.style("fill","#34738f")
+					.style("fill","#7a7a7a")
 					.attr("stroke",'#fff')	
 					.attr("stroke-width",1)	
 
