@@ -1,10 +1,8 @@
 window.scatterPlot = class scatterPlot
 	constructor:->
-		@width = 500
-		@height = 250
-		@padding = 20
-		@xPadding = 20
-		@yPadding = 20
+		@padding = 25
+		@width = window.innerWidth - @padding
+		@height = window.innerHeight - @padding
 
 		@dataset = [
 				[5, 20],
@@ -37,7 +35,7 @@ window.scatterPlot = class scatterPlot
 
 
 		@xAxis = d3.axisBottom(@xScale).ticks(10)	
-		@yAxis = d3.axisLeft(@yScale).ticks(5)		
+		@yAxis = d3.axisLeft(@yScale).ticks(10)		
 						
 
 

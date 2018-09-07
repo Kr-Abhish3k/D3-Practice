@@ -3,13 +3,13 @@
 	border: 2px solid #0d94a3;
 
     .scatterPlot {
-        border : 1px solid #b2483d;
+        
 
         .xAxis,.yAxis {
 
             path {
                 fill: none;
-                stroke: #d26013;
+                stroke: #4e8cb3;
                 shape-rendering: crispEdges;
             }
             .tick {
@@ -20,7 +20,7 @@
                 }
 
                 line {
-                    stroke: #d26013;
+                    stroke: #4e8cb3;
                 }
             }
 

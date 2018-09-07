@@ -15,12 +15,10 @@
       this.jsondata = this.getJSONdata();
       this.width = window.innerWidth - this.margin.left - this.margin.right; //window's inner width
       this.height = window.innerHeight - this.margin.top - this.margin.bottom; //window's inner width
-      
-      //The number of datapoints
-      this.datapoints = this.jsondata.length;
       this.parseDate = d3.timeParse("%Y");
+      
+      // X Scale
       that = this;
-      // X Scale 
       this.xScale = d3.scaleTime().domain(d3.extent(this.jsondata, function(d) {
         return d.year = that.parseDate(d.year); //input
       })).range([
@@ -45,30 +43,61 @@
       
       //1. attach SVG to body
       this.svg = d3.select(".drawBoard").append("svg").attr("class", "lineChart").attr("height", this.height + this.margin.top + this.margin.bottom).attr("width", this.width + this.margin.left + this.margin.right).append("g").attr("class", "gContainer").attr("transform", "translate( " + this.margin.left + " , " + this.margin.top + ")");
+    }
+
+    init() {
+      this.addAxes();
+      this.drawHorizontalGridLines(this.width);
+      this.connectPoints();
+      return this.plotPoints();
+    }
+
+    getJSONdata() {
+      var dataArray;
+      dataArray = [];
+      $.ajax({
+        type: "GET",
+        async: false,
+        url: "./lineChart.json",
+        data: {
+          get_param: 'value'
+        },
+        dataType: "json",
+        success: function(data) {
+          return dataArray = data;
+        }
+      });
+      return dataArray;
+    }
+
+    addAxes() {
       
       // 2. Call the x axis in a group tag	
       this.svg.append("g").attr("class", "xAxis").attr("transform", "translate( 0, " + this.height + ")").call(d3.axisBottom(this.xScale)); // Create an axis component with d3.axisBottom
       
       //3. Call the y axis in a group tag		
-      this.svg.append("g").attr("class", "yAxis").call(d3.axisLeft(this.yScale)); // Create an axis component with d3.axisLeft
-      
-      //7. To add horizontal lines on graph
-      this.svg.append("g").attr("class", "grid");
-      
-      //4.d3's line generator
+      return this.svg.append("g").attr("class", "yAxis").call(d3.axisLeft(this.yScale)); // Create an axis component with d3.axisLeft	
+    }
+
+    connectPoints() {
+      var that;
       that = this;
+      //4.d3's line generator
       this.line = d3.line().x(function(d) {
         return that.xScale(d.year); //set the x co-ordinates values for the line generator
       }).y(function(d) {
         return that.yScale(d.count); //set the y co-ordinates values for the line generator 
       }).curve(d3.curveMonotoneX); // apply smoothing to the line
       
-      //5. Append Path , bind the data and call th eline generator
-      this.svg.append("path").datum(this.jsondata).attr("class", "line").attr("d", this.line); //Bind Data to line //calls the line generator
-      
+      //5. Append Path , bind the data and call the line generator
+      return this.svg.append("path").datum(this.jsondata).attr("class", "line").attr("d", this.line); //Bind Data to line //calls the line generator
+    }
+
+    plotPoints() {
+      var that;
       //6. Append a circle for each datapoint				
       that = this;
-      this.svg.selectAll(".dot").data(this.jsondata).enter().append("circle").attr("class", "dot").attr("cx", function(d) {
+      return this.svg.selectAll(".dot").data(this.jsondata).enter().append("circle").attr("class", "dot").attr("cx", function(d) {
         return that.xScale(d.year);
       }).attr("cy", function(d) {
         return that.yScale(d.count);
@@ -102,39 +131,10 @@
       });
     }
 
-    init() {
-      //plotPoints()
-      //@addAxes()		
-      return this.drawHorizontalGridLines(this.width);
-    }
-
-    plotPoints() {}
-
-    getJSONdata() {
-      var dataArray;
-      dataArray = [];
-      $.ajax({
-        type: "GET",
-        async: false,
-        url: "./lineChart.json",
-        data: {
-          get_param: 'value'
-        },
-        dataType: "json",
-        success: function(data) {
-          console.log("JSON DATA :- " + data);
-          return dataArray = data;
-        }
-      });
-      return dataArray;
-    }
-
-    addAxes() {
-      this.svg.append("g").attr("class", "xAxis").attr("transform", "translate(0 , " + this.height + ")").call(this.xAxis);
-      return this.svg.append("g").attr("class", "yAxis").attr("transform", "translate( 20 , 0)").call(this.yAxis);
-    }
-
     drawHorizontalGridLines(width) {
+      //7. To add horizontal lines on graph
+      this.svg.append("g").attr("class", "grid");
+      //add lines to graph parallel to x-axis
       return this.svg.select(".grid").call(d3.axisLeft(this.yScale).ticks(10).tickSize(-this.width).tickFormat(''));
     }
 
