@@ -1,0 +1,40 @@
+.drawBoard {
+  position: relative;
+}
+.drawBoard .toolTip {
+  position: absolute;
+  height: 28px;
+  width: 125px;
+  background: #C6DCEA;
+  color: #000;
+  text-align: center;
+  border-radius: 8px;
+  border: none;
+  font: 12px sans-serif;
+}
+.drawBoard .lineChart .line {
+  fill: none;
+  stroke: #4e8cb3;
+  stroke-width: 3;
+}
+.drawBoard .lineChart .grid path {
+  stroke: none;
+}
+.drawBoard .lineChart .grid line {
+  stroke: lightgrey;
+  stroke-opacity: 0.7;
+}
+.drawBoard .lineChart .xAxis .tick line {
+  display: none;
+}
+.drawBoard .lineChart .xAxis path, .drawBoard .lineChart .yAxis path {
+  display: none;
+}
+.drawBoard .lineChart .xAxis .tick line, .drawBoard .lineChart .yAxis .tick line {
+  stroke: lightgrey;
+}
+.drawBoard .lineChart .xAxis g:first-of-type text, .drawBoard .lineChart .yAxis g:first-of-type text {
+  display: none;
+}
+
+/*# sourceMappingURL=lineChart.css.map */

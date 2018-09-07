@@ -1,0 +1,21 @@
+.drawBoard {
+  margin: 20px auto;
+  border: 2px solid #0d94a3;
+}
+.drawBoard .scatterPlot {
+  border: 1px solid #b2483d;
+}
+.drawBoard .scatterPlot .xAxis path, .drawBoard .scatterPlot .yAxis path {
+  fill: none;
+  stroke: #d26013;
+  shape-rendering: crispEdges;
+}
+.drawBoard .scatterPlot .xAxis .tick text, .drawBoard .scatterPlot .yAxis .tick text {
+  font-family: sans-serif;
+  font-size: 11px;
+}
+.drawBoard .scatterPlot .xAxis .tick line, .drawBoard .scatterPlot .yAxis .tick line {
+  stroke: #d26013;
+}
+
+/*# sourceMappingURL=scatterPlot.css.map */

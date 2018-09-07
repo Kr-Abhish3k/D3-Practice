@@ -1,0 +1,32 @@
+.drawBoard {
+	margin: 20px auto;
+	border: 2px solid #0d94a3;
+
+    .scatterPlot {
+        border : 1px solid #b2483d;
+
+        .xAxis,.yAxis {
+
+            path {
+                fill: none;
+                stroke: #d26013;
+                shape-rendering: crispEdges;
+            }
+            .tick {
+
+                text {
+                    font-family: sans-serif;
+                    font-size: 11px;
+                }
+
+                line {
+                    stroke: #d26013;
+                }
+            }
+
+        }
+    }
+
+}
+
+

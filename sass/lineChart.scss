@@ -1,0 +1,65 @@
+.drawBoard {
+	position: relative;
+
+	.toolTip {
+		position: absolute;
+		height: 28px;
+		width: 125px;
+		background: #C6DCEA;
+		color: #000;
+		text-align: center;
+		border-radius: 8px;
+		border: none;
+		font: 12px sans-serif;
+	}
+
+	.lineChart {
+
+
+		.line {
+			fill: none;
+			stroke: #4e8cb3;
+			stroke-width: 3;
+		}
+
+		.grid {
+			path {
+				stroke: none;
+			}
+			line {
+				stroke: lightgrey;
+				stroke-opacity: 0.7;
+		 	}
+		}
+
+		.xAxis {
+			.tick {
+				line {
+					display: none;
+				}
+				text{}
+			}
+		}
+
+		.xAxis , .yAxis {
+			path {
+				display: none;
+			}
+
+			.tick {
+				line {
+					stroke: lightgrey;
+					
+				}
+				text{}
+			}
+			g:first-of-type text  {
+			    display:  none;
+			}
+		}
+
+		circle {
+
+		}
+	}
+}
