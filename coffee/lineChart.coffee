@@ -9,68 +9,68 @@ window.lineChart = class lineChart
 		}
 
 		@jsondata = @getJSONdata()
-		@width = window.innerWidth - @margin.left - @margin.right #window's inner width
-		@height = window.innerHeight - @margin.top - @margin.bottom #window's inner width
+
+		#@height = window.innerHeight - @margin.top - @margin.bottom #window's inner height
+		@height = 500 - @margin.top - @margin.bottom 
 		
 		@parseDate = d3.timeParse("%Y")
-		
-		# X Scale
-		that=this 
-		@xScale = d3.scaleTime()
-					.domain(d3.extent(@jsondata , (d)-> d.year = that.parseDate(d.year))) #input
-					.range([0,@width])  #output
-
-
-		# Y Scale  
-		@yScale = d3.scaleLinear()
-					.domain([0, d3.max(@jsondata, (d)->d.count)+1000]) #input
-					.range([@height , 0])  #output
 
 		# Add Tool tip Div to chart
-		@toolTipDiv = d3.select('.drawBoard').append('div').attr('class', 'toolTip').style('opacity', 0)					
-					
+		@toolTipDiv = d3.select('.drawBoard').append('div').attr('class', 'toolTip').style('opacity', 0)	
+
 		#1. attach SVG to body
 		@svg  = d3.select(".drawBoard").append("svg")
 				.attr("class","lineChart")
 				.attr("height", @height + @margin.top + @margin.bottom )
-				.attr("width", @width + @margin.left + @margin.right )	
-				.append("g")
-				.attr("class","gContainer")
-				.attr("transform" , "translate( "+ @margin.left + " , " + @margin.top + ")" )	
 
-	
+		@gContainer = @svg.append("g")
+						.attr("class","gContainer")
+						.attr("transform" , "translate( "+ @margin.left + " , " + @margin.top + ")" )			
+
+		#2. X Scale
+		@xAxis = d3.axisBottom()
+		@drawXaxis =@gContainer.append("g").attr("class", "xAxis").attr("transform", "translate( 0, " +  @height + ")" )
+
+		that=this 
+		@xScale = d3.scaleTime()
+					.domain(d3.extent(@jsondata , (d)-> d.year = that.parseDate(d.year))) #input			
+
+		#3. Y Scale 
+		@yAxis = d3.axisLeft()
+		@drawYaxis = @gContainer.append("g").attr("class", "yAxis") 
+		@yScale = d3.scaleLinear()
+					.domain([0, d3.max(@jsondata, (d)->d.count)+1000]) #input
+					.range([@height , 0])  #output	
+		@yAxis.scale(@yScale)			
+
+		@drawYaxis.call(@yAxis)				
+
+
+
+		#7. To add horizontal lines on graph
+		@gContainer.append("g")
+			.attr("class","grid")
 
 	init:->
-		@addAxes()
-		@drawHorizontalGridLines(@width)
+		@setSvgDimensions()
+
+		$(window).on 'resize': =>
+			@setSvgDimensions()
+			
+
+		
+	setSvgDimensions:()->
+		@width = window.innerWidth - @margin.left - @margin.right #window's inner width
+		@svg.attr("width", @width + @margin.left + @margin.right )
+		
+		@xScale.range([0, @width])
+		@xAxis.scale(@xScale)
+		@drawXaxis.call(@xAxis)
+
 		@connectPoints()
 		@plotPoints()
-		
-
-	getJSONdata:() ->
-		dataArray =[]
-		$.ajax(
-			type: "GET",
-			async: false,
-			url: "./lineChart.json",
-			data: { get_param: 'value' },
-			dataType: "json",
-			success: (data) ->
-				dataArray = data
-		)
-		dataArray
-
-	addAxes:() ->	
-		# 2. Call the x axis in a group tag	
-		@svg.append("g")
-			.attr("class", "xAxis")
-			.attr("transform", "translate( 0, " +  @height  + ")" ) 		
-			.call(d3.axisBottom(@xScale)) # Create an axis component with d3.axisBottom
-
-		#3. Call the y axis in a group tag		
-		@svg.append("g")
-			.attr("class", "yAxis")
-			.call(d3.axisLeft(@yScale))	# Create an axis component with d3.axisLeft	
+		@drawHorizontalGridLines(@width)
+			
 
 	connectPoints:() ->
 		that = this
@@ -82,16 +82,18 @@ window.lineChart = class lineChart
 				
 
 		#5. Append Path , bind the data and call the line generator
-		@svg.append("path")
+		@gContainer.selectAll('.line').remove()
+		@gContainer.append("path")
 			.datum(@jsondata) #Bind Data to line
 			.attr("class", "line")
 			.attr("d" , @line) #calls the line generator
 
 		
 	plotPoints:() ->
-		#6. Append a circle for each datapoint				
+		#6. Append a circle for each datapoint
+		@gContainer.selectAll('.dot').remove()				
 		that = this
-		@svg.selectAll(".dot")
+		@gContainer.selectAll(".dot")
 			.data(@jsondata)
 			.enter()
 			.append("circle")
@@ -145,12 +147,22 @@ window.lineChart = class lineChart
 
 	
 	drawHorizontalGridLines:(width)->
-		#7. To add horizontal lines on graph
-		@svg.append("g")
-			.attr("class","grid")
+		#add horizontal lines to graph parallel to x-axis
+		@gContainer.select(".grid").call(d3.axisLeft(@yScale).ticks(10).tickSize(-width).tickFormat(''))
 
-		#add lines to graph parallel to x-axis
-		@svg.select(".grid").call(d3.axisLeft(@yScale).ticks(10).tickSize(-@width).tickFormat(''))
+	getJSONdata:() ->
+		dataArray =[]
+		$.ajax(
+			type: "GET",
+			async: false,
+			url: "./lineChart.json",
+			data: { get_param: 'value' },
+			dataType: "json",
+			success: (data) ->
+				dataArray = data
+		)
+		dataArray
+	
 
 
 

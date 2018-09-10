@@ -13,20 +13,27 @@
         left: 50
       };
       this.jsondata = this.getJSONdata();
-      this.width = window.innerWidth - this.margin.left - this.margin.right; //window's inner width
-      this.height = window.innerHeight - this.margin.top - this.margin.bottom; //window's inner width
+      //@height = window.innerHeight - @margin.top - @margin.bottom #window's inner height
+      this.height = 500 - this.margin.top - this.margin.bottom;
       this.parseDate = d3.timeParse("%Y");
+      // Add Tool tip Div to chart
+      this.toolTipDiv = d3.select('.drawBoard').append('div').attr('class', 'toolTip').style('opacity', 0);
       
-      // X Scale
+      //1. attach SVG to body
+      this.svg = d3.select(".drawBoard").append("svg").attr("class", "lineChart").attr("height", this.height + this.margin.top + this.margin.bottom);
+      this.gContainer = this.svg.append("g").attr("class", "gContainer").attr("transform", "translate( " + this.margin.left + " , " + this.margin.top + ")");
+      
+      //2. X Scale
+      this.xAxis = d3.axisBottom();
+      this.drawXaxis = this.gContainer.append("g").attr("class", "xAxis").attr("transform", "translate( 0, " + this.height + ")");
       that = this;
       this.xScale = d3.scaleTime().domain(d3.extent(this.jsondata, function(d) {
-        return d.year = that.parseDate(d.year); //input
-      })).range([
-        0,
-        this.width //output
-      ]);
+        return d.year = that.parseDate(d.year); //input			
+      }));
       
-      // Y Scale  
+      //3. Y Scale 
+      this.yAxis = d3.axisLeft();
+      this.drawYaxis = this.gContainer.append("g").attr("class", "yAxis");
       this.yScale = d3.scaleLinear().domain([
         0,
         d3.max(this.jsondata,
@@ -35,48 +42,33 @@
         }) + 1000 //input
       ]).range([
         this.height,
-        0 //output
+        0 //output	
       ]);
+      this.yAxis.scale(this.yScale);
+      this.drawYaxis.call(this.yAxis);
       
-      // Add Tool tip Div to chart
-      this.toolTipDiv = d3.select('.drawBoard').append('div').attr('class', 'toolTip').style('opacity', 0);
-      
-      //1. attach SVG to body
-      this.svg = d3.select(".drawBoard").append("svg").attr("class", "lineChart").attr("height", this.height + this.margin.top + this.margin.bottom).attr("width", this.width + this.margin.left + this.margin.right).append("g").attr("class", "gContainer").attr("transform", "translate( " + this.margin.left + " , " + this.margin.top + ")");
+      //7. To add horizontal lines on graph
+      this.gContainer.append("g").attr("class", "grid");
     }
 
     init() {
-      this.addAxes();
-      this.drawHorizontalGridLines(this.width);
-      this.connectPoints();
-      return this.plotPoints();
-    }
-
-    getJSONdata() {
-      var dataArray;
-      dataArray = [];
-      $.ajax({
-        type: "GET",
-        async: false,
-        url: "./lineChart.json",
-        data: {
-          get_param: 'value'
-        },
-        dataType: "json",
-        success: function(data) {
-          return dataArray = data;
+      this.setSvgDimensions();
+      return $(window).on({
+        'resize': () => {
+          return this.setSvgDimensions();
         }
       });
-      return dataArray;
     }
 
-    addAxes() {
-      
-      // 2. Call the x axis in a group tag	
-      this.svg.append("g").attr("class", "xAxis").attr("transform", "translate( 0, " + this.height + ")").call(d3.axisBottom(this.xScale)); // Create an axis component with d3.axisBottom
-      
-      //3. Call the y axis in a group tag		
-      return this.svg.append("g").attr("class", "yAxis").call(d3.axisLeft(this.yScale)); // Create an axis component with d3.axisLeft	
+    setSvgDimensions() {
+      this.width = window.innerWidth - this.margin.left - this.margin.right; //window's inner width
+      this.svg.attr("width", this.width + this.margin.left + this.margin.right);
+      this.xScale.range([0, this.width]);
+      this.xAxis.scale(this.xScale);
+      this.drawXaxis.call(this.xAxis);
+      this.connectPoints();
+      this.plotPoints();
+      return this.drawHorizontalGridLines(this.width);
     }
 
     connectPoints() {
@@ -90,14 +82,16 @@
       }).curve(d3.curveMonotoneX); // apply smoothing to the line
       
       //5. Append Path , bind the data and call the line generator
-      return this.svg.append("path").datum(this.jsondata).attr("class", "line").attr("d", this.line); //Bind Data to line //calls the line generator
+      this.gContainer.selectAll('.line').remove();
+      return this.gContainer.append("path").datum(this.jsondata).attr("class", "line").attr("d", this.line); //Bind Data to line //calls the line generator
     }
 
     plotPoints() {
       var that;
-      //6. Append a circle for each datapoint				
+      //6. Append a circle for each datapoint
+      this.gContainer.selectAll('.dot').remove();
       that = this;
-      return this.svg.selectAll(".dot").data(this.jsondata).enter().append("circle").attr("class", "dot").attr("cx", function(d) {
+      return this.gContainer.selectAll(".dot").data(this.jsondata).enter().append("circle").attr("class", "dot").attr("cx", function(d) {
         return that.xScale(d.year);
       }).attr("cy", function(d) {
         return that.yScale(d.count);
@@ -132,10 +126,26 @@
     }
 
     drawHorizontalGridLines(width) {
-      //7. To add horizontal lines on graph
-      this.svg.append("g").attr("class", "grid");
-      //add lines to graph parallel to x-axis
-      return this.svg.select(".grid").call(d3.axisLeft(this.yScale).ticks(10).tickSize(-this.width).tickFormat(''));
+      //add horizontal lines to graph parallel to x-axis
+      return this.gContainer.select(".grid").call(d3.axisLeft(this.yScale).ticks(10).tickSize(-width).tickFormat(''));
+    }
+
+    getJSONdata() {
+      var dataArray;
+      dataArray = [];
+      $.ajax({
+        type: "GET",
+        async: false,
+        url: "./lineChart.json",
+        data: {
+          get_param: 'value'
+        },
+        dataType: "json",
+        success: function(data) {
+          return dataArray = data;
+        }
+      });
+      return dataArray;
     }
 
   };
