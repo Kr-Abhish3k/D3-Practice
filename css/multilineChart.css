@@ -1,0 +1,65 @@
+.drawBoard {
+  position: relative;
+}
+.drawBoard .toolTip {
+  position: absolute;
+  height: 28px;
+  width: 125px;
+  color: #fff;
+  text-align: center;
+  border-radius: 8px;
+  border: none;
+  font: 12px sans-serif;
+}
+.drawBoard .label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #000;
+  background: #fff;
+  text-align: center;
+  border-radius: 8px;
+  border: none;
+  font: 12px sans-serif;
+  margin: 5px;
+}
+.drawBoard .label span {
+  display: inline-block;
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  margin-right: 2px;
+  opacity: 0.4;
+}
+.drawBoard .label p {
+  display: inline-block;
+  margin-right: 10px;
+  opacity: 0.4;
+}
+.drawBoard .multiLineChart .grid path {
+  stroke: none;
+}
+.drawBoard .multiLineChart .grid line {
+  stroke: lightgrey;
+  stroke-opacity: 0.7;
+}
+.drawBoard .multiLineChart path {
+  fill: none;
+  /*stroke: #777;*/
+  shape-rendering: crispEdges;
+}
+.drawBoard .multiLineChart text {
+  font-family: Lato;
+  font-size: 13px;
+}
+.drawBoard .multiLineChart .xAxis path, .drawBoard .multiLineChart .yAxis path {
+  display: none;
+}
+.drawBoard .multiLineChart .xAxis .tick line, .drawBoard .multiLineChart .yAxis .tick line {
+  display: none;
+}
+.drawBoard .multiLineChart .xAxis .tick text, .drawBoard .multiLineChart .yAxis .tick text {
+  color: #686868;
+}
+
+/*# sourceMappingURL=multilineChart.css.map */

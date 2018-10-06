@@ -1,0 +1,88 @@
+.drawBoard {
+	position: relative;
+
+	.toolTip {
+		position: absolute;
+		height: 28px;
+		width: 125px;
+		color: #fff;
+		text-align: center;
+		border-radius: 8px;
+		border: none;
+		font: 12px sans-serif;
+		
+	}
+
+	.label {
+		position: absolute;
+		top: 0;
+		left: 0;
+		color: #000;
+		background: #fff;
+		text-align: center;
+		border-radius: 8px;
+		border: none;
+		font: 12px sans-serif;
+		margin: 5px;
+
+		span {
+			display: inline-block;
+			height: 10px;
+			width: 10px;
+			border-radius: 50%;
+			//background: #fcc846;
+			margin-right: 2px;
+			opacity: 0.4;
+			
+		}
+		p {
+				display: inline-block;
+				margin-right: 10px;
+				opacity: 0.4;
+			}
+	}
+
+	.multiLineChart {
+
+
+		.grid {
+			path {
+				stroke: none;
+			}
+			line {
+				stroke: lightgrey;
+				stroke-opacity: 0.7;
+		 	}
+		}
+
+		path {
+			fill: none;
+		    /*stroke: #777;*/
+		    shape-rendering: crispEdges;	
+		}
+
+		text {
+		    font-family: Lato;
+    		font-size: 13px;
+
+		}
+
+		.xAxis , .yAxis{
+			path {
+				display: none;
+			}
+			.tick {
+				line{
+					display: none;
+				}
+				text {
+					color: #686868;
+				}
+				
+			}
+		}
+
+	}
+
+
+}
