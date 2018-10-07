@@ -23,15 +23,18 @@
   font: 12px sans-serif;
   margin: 5px;
 }
-.drawBoard .label span {
+.drawBoard .label div {
   display: inline-block;
+}
+.drawBoard .label div span {
+  display: inherit;
   height: 10px;
   width: 10px;
   border-radius: 50%;
   margin-right: 2px;
   opacity: 0.4;
 }
-.drawBoard .label p {
+.drawBoard .label div p {
   display: inline-block;
   margin-right: 10px;
   opacity: 0.4;

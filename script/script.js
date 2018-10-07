@@ -5,129 +5,11 @@
   window.multiLineChart = multiLineChart = class multiLineChart {
     constructor() {
       var that;
-      this.data = [
-        {
-          "Org": "IBM",
-          "price": "202",
-          "year": "2000"
-        },
-        {
-          "Org": "IBM",
-          "price": "215",
-          "year": "2001"
-        },
-        {
-          "Org": "IBM",
-          "price": "179",
-          "year": "2002"
-        },
-        {
-          "Org": "IBM",
-          "price": "315",
-          "year": "2003"
-        },
-        {
-          "Org": "IBM",
-          "price": "134",
-          "year": "2004"
-        },
-        {
-          "Org": "IBM",
-          "price": "289",
-          "year": "2010"
-        },
-        {
-          "Org": "AMAZON",
-          "price": "224",
-          "year": "2000"
-        },
-        {
-          "Org": "AMAZON",
-          "price": "225",
-          "year": "2001"
-        },
-        {
-          "Org": "AMAZON",
-          "price": "279",
-          "year": "2002"
-        },
-        {
-          "Org": "AMAZON",
-          "price": "299",
-          "year": "2003"
-        },
-        {
-          "Org": "AMAZON",
-          "price": "234",
-          "year": "2004"
-        },
-        {
-          "Org": "AMAZON",
-          "price": "376",
-          "year": "2008"
-        },
-        {
-          "Org": "MSFT",
-          "price": "100",
-          "year": "2000"
-        },
-        {
-          "Org": "MSFT",
-          "price": "106",
-          "year": "2001"
-        },
-        {
-          "Org": "MSFT",
-          "price": "199",
-          "year": "2002"
-        },
-        {
-          "Org": "MSFT",
-          "price": "196",
-          "year": "2004"
-        },
-        {
-          "Org": "MSFT",
-          "price": "198",
-          "year": "2006"
-        },
-        {
-          "Org": "MSFT",
-          "price": "118",
-          "year": "2009"
-        },
-        {
-          "Org": "AAPL",
-          "price": "259",
-          "year": "2000"
-        },
-        {
-          "Org": "AAPL",
-          "price": "286",
-          "year": "2003"
-        },
-        {
-          "Org": "AAPL",
-          "price": "339",
-          "year": "2005"
-        },
-        {
-          "Org": "AAPL",
-          "price": "310",
-          "year": "2007"
-        },
-        {
-          "Org": "AAPL",
-          "price": "261",
-          "year": "2008"
-        },
-        {
-          "Org": "AAPL",
-          "price": "254",
-          "year": "2010"
-        }
-      ];
+      this.data = this.getJSONdata();
       this.lineColor = [" #152642", " #484848", "#f76c5e", " #ca2e55", "#84b4c0", "#7a4948", "#cebfcd", "#2c3749"];
+      this.dataGroup = d3.nest().key(function(d) {
+        return d.Org;
+      }).entries(this.data);
       /*@dataGroup = [
           {
               "key":"IBM",
@@ -146,9 +28,6 @@
                       ] 
           }
       ]*/
-      this.dataGroup = d3.nest().key(function(d) {
-        return d.Org;
-      }).entries(this.data);
       this.margin = {
         top: 50,
         bottom: 50,
@@ -157,32 +36,10 @@
       };
       this.height = 500 - this.margin.top - this.margin.bottom;
       this.parseDate = d3.timeParse("%Y");
-      //@dataGroup = @getJSONdata()
-      /*
-      @price =[]
-      @year = []
-      that = this
-      @dataGroup.forEach((data)->
-              getPrice = (data.values).map (currVal)->{price:currVal.price}
-              getYear =  (data.values).map (currVal)->{year:currVal.year}
-              that.price = that.price.concat(getPrice)
-              that.year =  that.year.concat(getYear)
-          )
-      */
       //add tool tip div to the chart
       this.toolTipDiv = d3.select(".drawBoard").append("div").attr("class", "toolTip").style("display", "none");
-      this.label = d3.select(".drawBoard").append("div").attr("class", "label");
-      //.style("opacity",1)
-      //.html("<span> IBM </span> <span> AMAZON </span> <span> MSFT </span> <span> AAPL </span>")     
-      that = this;
-      this.dataGroup.forEach(function(data, index) {
-        d3.select(".label").append("span").attr("class", data.key).style("background", that.lineColor[index]);
-        return d3.select(".label").append("p").attr("class", data.key).text(data.key).style("color", that.lineColor[index]);
-      });
-      
       //add svg
       this.svg = d3.select(".drawBoard").append("svg").attr("class", "multiLineChart").attr("height", this.height + this.margin.top + this.margin.bottom);
-      //.attr("width", window.innerWidth - @margin.right)
       this.gContainer = this.svg.append("g").attr("class", "gContainer").attr("transform", "translate( " + 35 + " , " + this.margin.top + ")");
       
       //x-scale 
@@ -190,8 +47,6 @@
       this.xScale = d3.scaleTime().domain(d3.extent(this.data, function(d) {
         return d.year = that.parseDate(d.year);
       }));
-      
-      //.range([0 , @width])            
       this.drawXaxis = this.gContainer.append('g').attr("class", "xAxis").attr("transform", "translate( 0, " + this.height + ")");
       this.xAxis = d3.axisBottom().scale(this.xScale);
       this.drawXaxis.call(this.xAxis);
@@ -208,7 +63,7 @@
       this.yAxis = d3.axisLeft().scale(this.yScale);
       this.drawYaxis.call(this.yAxis);
       
-      //7. To add horizontal lines on graph
+      // To add horizontal lines on graph
       this.gContainer.append("g").attr("class", "grid");
     }
 
@@ -229,6 +84,7 @@
       this.xScale.range([0, this.width]);
       this.xAxis.scale(this.xScale);
       this.drawXaxis.call(this.xAxis);
+      this.addLabels();
       this.generateLine();
       this.plotPoints();
       return this.drawHorizontalGridLines(this.width);
@@ -304,7 +160,7 @@
             topPosition = 60;
           }
           that.toolTipDiv.transition().duration(200).style("display", "block");
-          that.toolTipDiv.html("Year : " + d.year.getFullYear() + "<br>" + "Price:" + d.price).style("left", leftPosition + "px").style("top", topPosition + "px").style("background", that.lineColor[index]);
+          that.toolTipDiv.html("Year : " + d.year.getFullYear() + "<br>" + "Price : " + d.price).style("left", leftPosition + "px").style("top", topPosition + "px").style("background", that.lineColor[index]);
           return that.showLabel(data.key);
         }).on("mouseout", function(d) {
           that.onMouseout(this);
@@ -329,6 +185,19 @@
     drawHorizontalGridLines(width) {
       //add horizontal lines to graph parallel to x-axis
       return this.gContainer.select(".grid").call(d3.axisLeft(this.yScale).ticks(10).tickSize(-width).tickFormat(''));
+    }
+
+    addLabels() {
+      var that;
+      d3.select(".drawBoard").append("div").attr("class", "label");
+      that = this;
+      return this.dataGroup.forEach(function(data, index) {
+        var labelClass;
+        labelClass = "label_" + data.key;
+        d3.select(".label").append("div").attr("class", labelClass);
+        d3.select("." + labelClass).append("span").attr("class", data.key).style("background", that.lineColor[index]);
+        return d3.select("." + labelClass).append("p").attr("class", data.key).text(data.key).style("color", that.lineColor[index]);
+      });
     }
 
     showLabel(element) {

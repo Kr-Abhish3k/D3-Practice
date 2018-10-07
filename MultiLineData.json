@@ -1,168 +1,29 @@
-[{
-   "MSFT": [{
-         "year": "2000",
-         "price": 39.81
-      },
-      {
-         "year": "2001",
-         "price": 24.84
-      },
-      {
-         "year": "2002",
-         "price": 25.92
-      },
-      {
-         "year": "2003",
-         "price": 19.31
-      },
-      {
-         "year": "2004",
-         "price": 22.69
-      },
-      {
-         "year": "2005",
-         "price": 24.11
-      },
-      {
-         "year": "2006",
-         "price": 25.04
-      },
-      {
-         "year": "2007",
-         "price": 34
-      },
-      {
-         "year": "2008",
-         "price": 31.13
-      },
-      {
-         "year": "2009",
-         "price": 30.34
-      },
-      {
-         "year": "2010",
-         "price": 28.8
-      }],
+[
+   {"Org":"IBM","price": "202","year": "2000"},
+   {"Org":"IBM","price": "215","year": "2001"}, 
+   {"Org":"IBM","price": "179","year": "2002"}, 
+   {"Org":"IBM","price": "315","year": "2003"}, 
+   {"Org":"IBM","price": "134","year": "2004"}, 
+   {"Org":"IBM","price": "289","year": "2010"},
+               
+   {"Org":"AMAZON","price": "224","year": "2000"}, 
+   {"Org":"AMAZON","price": "225","year": "2001"},
+   {"Org":"AMAZON","price": "279","year": "2002"}, 
+   {"Org":"AMAZON","price": "299","year": "2003"}, 
+   {"Org":"AMAZON","price": "234","year": "2004"}, 
+   {"Org":"AMAZON","price": "376","year": "2008"},   
+   
+   {"Org":"MSFT","price": "100","year": "2000"}, 
+   {"Org":"MSFT","price": "106","year": "2001"},
+   {"Org":"MSFT","price": "199","year": "2002"}, 
+   {"Org":"MSFT","price": "196","year": "2004"}, 
+   {"Org":"MSFT","price": "198","year": "2006"}, 
+   {"Org":"MSFT","price": "118","year": "2009"},
 
-   "AMZN": [{
-         "year": "2000",
-         "price": 64.56
-      },
-      {
-         "year": "2001",
-         "price": 10.82
-      },
-      {
-         "year": "2002",
-         "price": 52.62
-      },
-      {
-         "year": "2003",
-         "price": 48.46
-      },
-      {
-         "year": "2004",
-         "price": 47.15
-      },
-      {
-         "year": "2005",
-         "price": 44.82
-      },
-      {
-         "year": "2006",
-         "price": 37.44
-      },
-      {
-         "year": "2007",
-         "price": 36.53
-      },
-      {
-         "year": "2008",
-         "price": 35.21
-      },
-      {
-         "year": "2009",
-         "price": 34.61
-      }
-   ],
-   "IBM": [
-      {
-         "year": "2000",
-         "price": 100.52
-      },
-      {
-         "year": "2001",
-         "price": 92.11
-      },
-      {
-         "year": "2002",
-         "price": 106.11
-      },
-      {
-         "year": "2003",
-         "price": 99.95
-      },
-      {
-         "year": "2004",
-         "price": 96.31
-      },
-      {
-         "year": "2005",
-         "price": 98.33
-      },
-      {
-         "year": "2006",
-         "price": 100.74
-      },
-      {
-         "year": "2007",
-         "price": 118.62
-      },
-      {
-         "year": "2008",
-         "price": 101.19
-      },
-      {
-         "year": "2009",
-         "price": 88.5
-      }
-   ],
-   "AAPL": [
-      {
-         "year": "2000",
-         "price": 25.94
-      },
-      {
-         "year": "2001",
-         "price": 28.66
-      },
-      {
-         "year": "2002",
-         "price": 33.95
-      },
-      {
-         "year": "2003",
-         "price": 31.01
-      },
-      {
-         "year": "2004",
-         "price": 21
-      },
-      {
-         "year": "2005",
-         "price": 26.19
-      },
-      {
-         "year": "2006",
-         "price": 25.41
-      },
-      {
-         "year": "2007",
-         "price": 30.47
-      },
-      {
-         "year": "2008",
-         "price": 12.88
-      }
-   ]
-}]
+   {"Org":"AAPL","price": "259","year": "2000"}, 
+   {"Org":"AAPL","price": "286","year": "2003"},
+   {"Org":"AAPL","price": "339","year": "2005"}, 
+   {"Org":"AAPL","price": "310","year": "2007"}, 
+   {"Org":"AAPL","price": "261","year": "2008"}, 
+   {"Org":"AAPL","price": "254","year": "2010"}               
+]
