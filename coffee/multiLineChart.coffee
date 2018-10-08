@@ -87,6 +87,7 @@ window.multiLineChart = class multiLineChart
         $(window).on 'resize':=>
             @gContainer.selectAll(".line").remove()
             @gContainer.selectAll(".dot").remove()
+            d3.select(".drawBoard").selectAll(".label").remove()
             @setSvgDimensions()
 
         

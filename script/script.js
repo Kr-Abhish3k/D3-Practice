@@ -73,6 +73,7 @@
         'resize': () => {
           this.gContainer.selectAll(".line").remove();
           this.gContainer.selectAll(".dot").remove();
+          d3.select(".drawBoard").selectAll(".label").remove();
           return this.setSvgDimensions();
         }
       });
